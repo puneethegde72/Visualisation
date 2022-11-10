@@ -9,19 +9,22 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import textwrap
-
+""" Created a functions for line and bar and pie plots
+in line_p funtion we are ploting the line graph """
 # creating function to create a line graph
 def line_p(x_axis, y_axis, name, col):
-    plt.plot(x_axis,y_axis,label= name, color= col)
-
+    plt.plot(x_axis,y_axis, '.-',label= name, color= col)
+"""This function will be used for creating multiple plot in subplot"""
 # Creating a function to create a pie chart with pie sub plot
 def pie_p(y, label, ind):
     #Ind will be taken from the index of the rows
     plt.subplot(3,2,ind+1)
-    plt.pie(y,labels = label, shadow= False, autopct="%2.1f%%",textprops={'fontsize': 6})
+    plt.pie(y,labels = label, shadow= False,
+            autopct="%2.1f%%",textprops={'fontsize': 6})
     plt.title(major["Major"][ind],fontsize = 6.2)
 
-    #Creating a function for Bar plot
+    """Creating a function for Bar plot where we will get the length a and other values
+    we are using w for a width in the bar plot for 2nd bar"""
 def bar_p(a, value1, value2, lab1, lab2):
     #placing values in barx and barx2 for width and length of a bar graph
     barx= np.arange(len(a))
@@ -31,22 +34,24 @@ def bar_p(a, value1, value2, lab1, lab2):
     #Ploting 2nd bar graph
     plt.bar(barx2, value2,w,label=lab2)
     plt.xticks(barx,a)
-
+'''creating a line graph of meat consumption of the Britain'''
 #reading a Data set of a csv file
 meat = pd.read_csv("C:/Users/Puneet/OneDrive - University of Hertfordshire/Applied DataScience 1/Assignment/Visualization 1/meat_consumption.csv")
 
 #Droping Unwated Columns
 meat= meat.drop(["Flag Codes","FREQUENCY",'INDICATOR'],axis=1)
 #filtering data as requied
-meat=meat[(meat["LOCATION"] == "GBR") & (meat["MEASURE"] == "THND_TONNE") & (meat["TIME"]>= 2005) & (meat["TIME"]<= 2010)]
+meat=meat[(meat["LOCATION"] == "GBR") & (meat["MEASURE"] == "THND_TONNE")
+          & (meat["TIME"]>= 2005) & (meat["TIME"]<= 2010)]
 
-meat_sheep = meat[(meat["SUBJECT"]=="SHEEP")]
+#meat_sheep = meat[(meat["SUBJECT"]=="SHEEP")]
 meat_beef = meat[(meat["SUBJECT"]=="BEEF")] #sub dataframe for Beef
 meat_poultry = meat[(meat["SUBJECT"]=="POULTRY")] #sub dataframe for Poultry
 meat_pig = meat[(meat["SUBJECT"]=="PIG")] ##sub dataframe for Pig
 
 #produsing a line graph  using a line_p function
 #line_p(meat_sheep.TIME, meat_sheep.Value, "Sheep","blue")
+plt.figure(figsize=(8, 10))
 line_p(meat_beef.TIME, meat_beef.Value, "Beef","red")
 line_p(meat_poultry.TIME, meat_poultry.Value, "Poultry","green")
 line_p(meat_pig.TIME, meat_pig.Value, "Pig","pink")
@@ -55,12 +60,18 @@ plt.ylabel("Tons", size=12)
 plt.title("Meat consumption of Britain from 2005 to 2010")
 plt.legend()
 
+"""Creating a pie chart to get the details of
+male and female students in every major"""
+
 #reading a Data set of a csv file
 major = pd.read_csv("C:/Users/Puneet/OneDrive - University of Hertfordshire/Applied DataScience 1/Assignment/Visualization 1/recent-grads.csv")
 # selecting a data where major category is computers & Mathematics
 major=(major.loc[major["Major_category"] == "Computers & Mathematics"])
 #droping unwanted data's
-major=major.drop(['Rank', "Major_category", 'ShareWomen', 'Sample_size', 'Unemployment_rate', 'Median', 'P25th', 'P75th', 'College_jobs', 'Non_college_jobs', 'Low_wage_jobs', 'Full_time_year_round'], axis=1)
+major=major.drop(['Rank', "Major_category", 'ShareWomen', 'Sample_size',
+                  'Unemployment_rate', 'Median', 'P25th', 'P75th',
+                  'College_jobs', 'Non_college_jobs', 'Low_wage_jobs',
+                  'Full_time_year_round'], axis=1)
 major = (major.loc[major["Major_code"]<=2107])
 major = (major.loc[major["Major_code"]>2001])
 #Re-arranging the data
@@ -93,7 +104,8 @@ plt.show()
 w=0.4
 plt.figure(figsize=(15, 10))
 #calling bar_p for creating bar function
-bar_p(employment["Major_code"], employment["Employed"], employment["Unemployed"],'Employed Student', 'UnEmployed Student')
+bar_p(employment["Major_code"], employment["Employed"],
+      employment["Unemployed"],'Employed Student', 'UnEmployed Student')
 #Labeling the plot with required data
 plt.xlabel("Major Code")
 plt.ylabel("N")
